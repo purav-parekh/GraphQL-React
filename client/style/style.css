@@ -7,3 +7,13 @@
   cursor: pointer;
   color: red;
 }
+
+.like-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.like-box > i {
+  margin-right: 5px;
+}

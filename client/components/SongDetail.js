@@ -1,8 +1,9 @@
-import gql from "graphql-tag";
 import React from "react";
 import { graphql } from "react-apollo";
 import { Link } from "react-router";
+import fetchSong from "../queries/fetchSong";
 import CreateLyrics from "./CreateLyrics";
+import LyricsList from "./LyricsList";
 
 function SongDetail(props) {
   const { song } = props.data;
@@ -10,23 +11,13 @@ function SongDetail(props) {
     return <div>Loading..</div>;
   }
 
-  console.log(song);
-
   return (
     <div>
       <div>
         <Link to="/">Back</Link>
         <h3>{song.title}</h3>
         <h5>Lyrics</h5>
-        <ul className="collection">
-          {song.lyrics.map(({ id, content }) => {
-            return (
-              <li key={id} className="collection-item">
-                {content}
-              </li>
-            );
-          })}
-        </ul>
+        <LyricsList song={song} />
       </div>
       <CreateLyrics songId={props.params.id} />
       <br />
@@ -34,19 +25,7 @@ function SongDetail(props) {
   );
 }
 
-const query = gql`
-  query fetchSong($id: ID!) {
-    song(id: $id) {
-      id
-      title
-      lyrics {
-        content
-      }
-    }
-  }
-`;
-
-export default graphql(query, {
+export default graphql(fetchSong, {
   options: (props) => {
     return { variables: { id: props.params.id } };
   },
